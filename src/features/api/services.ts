@@ -1,0 +1,53 @@
+import { Product, ProductDetail, CartAddRequest, CartResponse } from '../types/index';
+
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+export const fetchProducts = async (): Promise<Product[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/product`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
+  }
+};
+
+export const fetchProductDetails = async (productId: string): Promise<ProductDetail> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/product/${productId}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching product ${productId}:`, error);
+    throw error;
+  }
+};
+
+export const addToCart = async (
+  cartRequest: CartAddRequest
+): Promise<CartResponse> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/cart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cartRequest),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+    throw error;
+  }
+};
