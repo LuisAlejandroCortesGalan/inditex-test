@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useCart } from '../context/CartContext';
 import { useAddToCart } from '../hooks/useAddToCart';
 import { ProductActionsProps } from '../types/productItem';
 import { ColorOption, StorageOption } from '../types';
@@ -8,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useToast } from '../hooks/useToast';
 
 const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
-  const { updateCartCount } = useCart();
   const { showSuccess, showError } = useToast();
   const [selectedStorage, setSelectedStorage] = useState(
     product.options?.storages?.[0]?.code || 0
@@ -20,22 +18,21 @@ const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
   const { mutate: addToCartMutation, isPending } = useAddToCart();
 
   const handleAddToCart = async () => {
-    addToCartMutation(
-      {
-        id: product.id,
-        colorCode: selectedColor,
-        storageCode: selectedStorage
+    const cartRequest = {
+      id: product.id,
+      colorCode: selectedColor,
+      storageCode: selectedStorage,
+    };
+    console.log('Adding to cart:', cartRequest);
+    addToCartMutation(cartRequest, {
+      onSuccess: () => {
+        showSuccess('Product added to cart!');
       },
-      {
-        onSuccess: (result) => {
-          updateCartCount(result.count);
-          showSuccess('Product added to cart!');
-        },
-        onError: () => {
-          showError('Failed to add product to cart');
-        }
-      }
-    );
+      onError: (error: Error) => {
+        console.error('Add to cart error:', error);
+        showError(`Failed to add product to cart: ${error.message}`);
+      },
+    });
   };
 
   return (
@@ -70,8 +67,8 @@ const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
         </select>
       </div>
 
-      <button 
-        className="add-to-cart-button" 
+      <button
+        className="add-to-cart-button"
         onClick={handleAddToCart}
         disabled={isPending}
       >

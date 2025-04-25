@@ -2,7 +2,7 @@ export interface Product {
   id: string;
   brand: string;
   model: string;
-  price: number;
+  price: string;
   imgUrl: string;
 }
 
@@ -38,6 +38,6 @@ export interface CartResponse {
 
 export interface CartAddRequest {
   id: string;
-  colorCode: number;
-  storageCode: number;
+  colorCode: string;
+  storageCode: string;
 }

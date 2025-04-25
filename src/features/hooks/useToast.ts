@@ -4,7 +4,7 @@ import { ToastOptions } from '../types/Toast';
 
 const defaultOptions: ToastOptions = {
   position: 'top-right',
-  autoClose: 3000,
+  autoClose: 1000,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,

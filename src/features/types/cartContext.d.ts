@@ -1,7 +1,11 @@
+export interface CartProviderProps {
+  children: ReactNode;
+}
+
 export interface CartContextType {
   cartCount: number;
-  updateCartCount: (count: number) => void;
+  cartItems: CartAddRequest[];
+  addToCart: (item: CartAddRequest) => void;
+  removeFromCart: (index: number) => void;
+  getProductById: (id: string) => Promise<Product>;
 }
-export interface CartProviderProps {
-    children: ReactNode;
-  }
