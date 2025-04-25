@@ -1,5 +1,4 @@
-import { Product, ProductDetail, CartAddRequest, CartResponse } from '../types/index';
-
+import { CartAddRequest, CartResponse, Product, ProductDetail } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -29,9 +28,8 @@ export const fetchProductDetails = async (productId: string): Promise<ProductDet
   }
 };
 
-export const addToCart = async (
-  cartRequest: CartAddRequest
-): Promise<CartResponse> => {
+export const addToCart = async (cartRequest: CartAddRequest): Promise<CartResponse> => {
+  console.log('Sending to cart API:', cartRequest);
   try {
     const response = await fetch(`${API_BASE_URL}/api/cart`, {
       method: 'POST',
@@ -40,12 +38,16 @@ export const addToCart = async (
       },
       body: JSON.stringify(cartRequest),
     });
-    
+    const responseText = await response.text();
+    console.log('Cart API response:', response.status, responseText);
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status} - ${responseText}`);
     }
-    
-    return await response.json();
+    try {
+      return JSON.parse(responseText);
+    } catch (parseError) {
+      throw new Error(`Failed to parse response: ${responseText} and: ${parseError}`);
+    }
   } catch (error) {
     console.error('Error adding to cart:', error);
     throw error;

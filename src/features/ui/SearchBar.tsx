@@ -1,9 +1,5 @@
 import React from 'react';
-  
-interface SearchBarProps {
-  searchTerm: string;
-  onSearchChange: (term: string) => void;
-}
+import { SearchBarProps } from '../types/searchBar.d';
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onSearchChange }) => {
   return (
