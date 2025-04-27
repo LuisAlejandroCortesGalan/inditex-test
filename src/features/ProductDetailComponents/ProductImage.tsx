@@ -1,7 +1,12 @@
-import React from 'react';
-import { ProductImageProps } from '../types/productItem';
+import React from "react";
 
-const ProductImage: React.FC<ProductImageProps> = ({ imgUrl, brand, model }) => {
+import { ProductImageProps } from "../Types/productItem";
+
+const ProductImage: React.FC<ProductImageProps> = ({
+  imgUrl,
+  brand,
+  model,
+}) => {
   return (
     <div className="product-detail-image">
       <img src={imgUrl} alt={`${brand} ${model}`} />

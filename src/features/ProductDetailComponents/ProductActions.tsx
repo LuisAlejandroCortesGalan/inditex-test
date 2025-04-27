@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useAddToCart } from '../hooks/useAddToCart';
-import { ProductActionsProps } from '../types/productItem';
-import { ColorOption, StorageOption } from '../types';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useToast } from '../hooks/useToast';
+import React, { useState } from "react";
+import { ToastContainer } from "react-toastify";
+
+import { useAddToCart } from "../Hooks/useAddToCart";
+import { useToast } from "../Hooks/useToast";
+import { ColorOption, StorageOption } from "../Types";
+import { ProductActionsProps } from "../Types/productItem";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
   const { showSuccess, showError } = useToast();
@@ -23,13 +24,13 @@ const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
       colorCode: selectedColor,
       storageCode: selectedStorage,
     };
-    console.log('Adding to cart:', cartRequest);
+    console.log("Adding to cart:", cartRequest);
     addToCartMutation(cartRequest, {
       onSuccess: () => {
-        showSuccess('Product added to cart!');
+        showSuccess("Product added to cart!");
       },
       onError: (error: Error) => {
-        console.error('Add to cart error:', error);
+        console.error("Add to cart error:", error);
         showError(`Failed to add product to cart: ${error.message}`);
       },
     });
@@ -72,7 +73,7 @@ const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
         onClick={handleAddToCart}
         disabled={isPending}
       >
-        {isPending ? 'Adding...' : 'Add to Cart'}
+        {isPending ? "Adding..." : "Add to Cart"}
       </button>
 
       <ToastContainer />

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useProducts } from "../hooks/useProducts";
-import { useFilteredProducts } from "../hooks/useFilteredProducts";
-import SearchBar from "../ui/SearchBar";
+
+import { useFilteredProducts } from "../Hooks/useFilteredProducts";
+import { useProducts } from "../Hooks/useProducts";
 import ProductItem from "../ProductDetailComponents/ProductItem";
-import ErrorBoundary from "../ui/ErrorBoundary";
-import LoadingSpinner from "../ui/LoadindSpinner";
+import ErrorBoundary from "../Ui/ErrorBoundary";
+import LoadingSpinner from "../Ui/LoadindSpinner";
+import SearchBar from "../Ui/SearchBar";
 
 const ProductListPage: React.FC = () => {
   const { data: products, isLoading, error } = useProducts();

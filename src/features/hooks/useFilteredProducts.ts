@@ -1,7 +1,11 @@
-import { useMemo } from 'react';
-import { Product } from '../types';
+import { useMemo } from "react";
 
-export const useFilteredProducts = (products: Product[] | undefined, searchTerm: string) => {
+import { Product } from "../Types";
+
+export const useFilteredProducts = (
+  products: Product[] | undefined,
+  searchTerm: string,
+) => {
   return useMemo(() => {
     if (!products || !searchTerm.trim()) {
       return products;
@@ -11,7 +15,7 @@ export const useFilteredProducts = (products: Product[] | undefined, searchTerm:
     return products.filter(
       (product) =>
         product.brand.toLowerCase().includes(lowerCaseSearch) ||
-        product.model.toLowerCase().includes(lowerCaseSearch)
+        product.model.toLowerCase().includes(lowerCaseSearch),
     );
   }, [products, searchTerm]);
 };

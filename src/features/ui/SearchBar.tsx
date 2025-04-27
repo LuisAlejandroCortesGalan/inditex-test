@@ -1,7 +1,11 @@
-import React from 'react';
-import { SearchBarProps } from '../types/searchBar.d';
+import React from "react";
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onSearchChange }) => {
+import { SearchBarProps } from "../Types/searchBar.d";
+
+const SearchBar: React.FC<SearchBarProps> = ({
+  searchTerm,
+  onSearchChange,
+}) => {
   return (
     <div className="search-bar">
       <input

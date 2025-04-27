@@ -1,9 +1,9 @@
-import { toast } from 'react-toastify';
-import { ToastOptions } from '../types/Toast';
+import { toast } from "react-toastify";
 
+import { ToastOptions } from "../Types/Toast";
 
 const defaultOptions: ToastOptions = {
-  position: 'top-right',
+  position: "top-right",
   autoClose: 1000,
   hideProgressBar: false,
   closeOnClick: true,
