@@ -80,8 +80,6 @@ src/
 │   ├── Header.tsx
 │   ├── LoadingSpinner.tsx
 │   └── SearchBar.tsx
-├── utils/                     # Utilities
-│   └── cache.ts
 ├── App.css                    # Global CSS
 ├── App.tsx                    # Root component
 └── main.tsx                   # Entry point
