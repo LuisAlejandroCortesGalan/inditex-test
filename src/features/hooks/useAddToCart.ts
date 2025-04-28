@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { addToCart as addToCartAPI } from "../Api/services";
-import { useCart } from "../Context/CartContextUtils";
+import { useCart } from "../Context/CartContext";
 import { CartAddRequest } from "../Types";
 
 export const useAddToCart = () => {

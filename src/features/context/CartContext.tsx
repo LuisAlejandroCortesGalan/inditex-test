@@ -1,10 +1,11 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 import { CartAddRequest, Product } from "../Types";
 import { CartContextType } from "../Types/cartContext";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -67,4 +68,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
     </CartContext.Provider>
   );
+};
+
+export const useCart = (): CartContextType => {
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+  return context;
 };
