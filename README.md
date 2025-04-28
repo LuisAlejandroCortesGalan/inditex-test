@@ -82,7 +82,7 @@ src/
 │   └── SearchBar.tsx
 ├── App.css                    # Global CSS
 ├── App.tsx                    # Root component
-└── main.tsx                   # Entry pointt
+└── main.tsx                   # Entry point
 ```
 
 ## 🧩 Components
