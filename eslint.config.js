@@ -35,47 +35,10 @@ export default [
       "no-undef": "off",
     },
   },
-  // Configuración específica para jest.config.ts y setupTests.ts
-  {
-    files: ["jest.config.ts", "setupTests.ts"],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: {
-        ...globals.node,
-        process: "readonly",
-      },
-      parser: tsParser,
-      parserOptions: {
-        project: null, // Deshabilitar type-aware linting
-      },
-    },
-    plugins: {
-      "@typescript-eslint": tsPlugin,
-      import: importPlugin,
-      prettier,
-    },
-    rules: {
-      ...js.configs.recommended.rules,
-      ...tsPlugin.configs.recommended.rules,
-      "prettier/prettier": ["error"],
-      "import/no-extraneous-dependencies": "off",
-      "no-undef": "off",
-    },
-    settings: {
-      "import/parsers": {
-        "@typescript-eslint/parser": [".ts"],
-      },
-      "import/resolver": {
-        typescript: {
-          alwaysTryTypes: true,
-          project: ["./tsconfig.json"],
-        },
-      },
-    },
-  },
-  // Configuración para archivos .ts y .tsx
+  // Configuración para archivos .ts y .tsx EXCEPTO los archivos de configuración
   {
     files: ["**/*.{ts,tsx}"],
+    ignores: ["jest.config.ts", "setupTests.ts", "vite.config.ts"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
@@ -162,6 +125,46 @@ export default [
       },
     },
   },
+  // Configuración específica para jest.config.ts y setupTests.ts
+  {
+    files: ["jest.config.ts", "setupTests.ts"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: {
+        ...globals.node,
+        process: "readonly",
+      },
+      parser: tsParser,
+      parserOptions: {
+        project: null, // Deshabilitar type-aware linting completamente
+        ecmaVersion: 2020,
+        sourceType: "module",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tsPlugin,
+      import: importPlugin,
+      prettier,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      // Quitamos las reglas de typescript que requieren type checking
+      "prettier/prettier": ["error"],
+      "import/no-extraneous-dependencies": "off",
+      "no-undef": "off",
+    },
+    settings: {
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts"],
+      },
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: null,
+        },
+      },
+    },
+  },
   // Configuración para vite.config.ts
   {
     files: ["vite.config.ts"],
@@ -174,6 +177,8 @@ export default [
       parser: tsParser,
       parserOptions: {
         project: null,
+        ecmaVersion: 2020,
+        sourceType: "module",
       },
     },
     plugins: {
@@ -183,7 +188,7 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
-      ...tsPlugin.configs.recommended.rules,
+      // Quitamos las reglas de typescript que requieren type checking
       "prettier/prettier": ["error"],
       "import/no-extraneous-dependencies": "off",
       "no-undef": "off",
@@ -195,7 +200,7 @@ export default [
       "import/resolver": {
         typescript: {
           alwaysTryTypes: true,
-          project: ["./tsconfig.json"],
+          project: null,
         },
       },
     },

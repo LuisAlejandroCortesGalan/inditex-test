@@ -1,20 +1,25 @@
-import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
-import { createRoot } from 'react-dom/client';
-import { act } from 'react';
-import '@testing-library/jest-dom';
+import {
+  renderHook as originalRenderHook,
+  RenderHookOptions,
+} from "@testing-library/react";
+import { createRoot } from "react-dom/client";
+import React, { ReactNode } from "react";
+import "@testing-library/jest-dom";
 
 // Custom renderHook to use createRoot
-const customRenderHook = <Result, Props extends { children: React.ReactNode }>(
-  callback: (props: Props) => Result,
-  options?: RenderHookOptions<Props>
+const customRenderHook = <Result, Props>(
+  callback: () => Result,
+  options?: Omit<RenderHookOptions<Props>, "wrapper"> & {
+    wrapper?: React.ComponentType<{ children: ReactNode }>;
+  },
 ) => {
-  const container = document.createElement('div');
+  const container = document.createElement("div");
   document.body.appendChild(container);
   const root = createRoot(container);
 
-  const renderResult = renderHook(callback, {
+  const renderResult = originalRenderHook(callback, {
     ...options,
-    wrapper: ({ children }: Props) => {
+    wrapper: ({ children }: { children: ReactNode }) => {
       root.render(children);
       return null;
     },
@@ -30,12 +35,5 @@ const customRenderHook = <Result, Props extends { children: React.ReactNode }>(
   };
 };
 
-(function setupMock() {
-  jest.mock('@testing-library/react-hooks', () => {
-    const actual = jest.requireActual('@testing-library/react-hooks');
-    return {
-      ...actual,
-      renderHook: customRenderHook,
-    };
-  });
-})();
+// Exportar el renderHook personalizado para usarlo en los tests
+export { customRenderHook as renderHook };
