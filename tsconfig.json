@@ -12,16 +12,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "baseUrl": ".",
-    // "paths": {
-    //   "@api/*": ["src/features/Api/*"],                       
-    //   "@context/*": ["src/features/Context/*"],                 
-    //   "@hooks/*": ["src/features/Hooks/*"],                      
-    //   "@pages/*": ["src/features/Pages/*"],                     
-    //   "@product-components/*": ["src/features/ProductDetailComponents/*"], 
-    //   "@types/*": ["src/features/Types/*"],                     
-    //   "@ui/*": ["src/features/Ui/*"],                            
-    //   "@tests/*": ["__tests__/*"]                  
-    // }
+
   },
-  "include": ["src/**/*", "vite.config.ts"]
+  "include": ["src/**/*", "vite.config.ts"],
+  "exclude": ["__tests__/**/*"]
 }

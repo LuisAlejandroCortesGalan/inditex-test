@@ -1,6 +1,7 @@
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react";
+
 import { useFilteredProducts } from "../src/features/Hooks/useFilteredProducts";
-import "@testing-library/jest-dom"; 
+import "@testing-library/jest-dom";
 
 describe("useFilteredProducts", () => {
   const mockProducts = [
@@ -41,7 +42,7 @@ describe("useFilteredProducts", () => {
 
   it("filters products by brand", () => {
     const { result } = renderHook(() =>
-      useFilteredProducts(mockProducts, "Apple")
+      useFilteredProducts(mockProducts, "Apple"),
     );
     expect(result.current).toHaveLength(2);
     expect(result.current?.map((p) => p.id)).toEqual(["1", "4"]);
@@ -49,7 +50,7 @@ describe("useFilteredProducts", () => {
 
   it("filters products by model", () => {
     const { result } = renderHook(() =>
-      useFilteredProducts(mockProducts, "Galaxy")
+      useFilteredProducts(mockProducts, "Galaxy"),
     );
     expect(result.current).toHaveLength(1);
     expect(result.current?.[0].id).toBe("2");
@@ -57,7 +58,7 @@ describe("useFilteredProducts", () => {
 
   it("is case insensitive", () => {
     const { result } = renderHook(() =>
-      useFilteredProducts(mockProducts, "apple")
+      useFilteredProducts(mockProducts, "apple"),
     );
     expect(result.current).toHaveLength(2);
     expect(result.current?.map((p) => p.id)).toEqual(["1", "4"]);
@@ -65,14 +66,14 @@ describe("useFilteredProducts", () => {
 
   it("returns empty array when no matches found", () => {
     const { result } = renderHook(() =>
-      useFilteredProducts(mockProducts, "Motorola")
+      useFilteredProducts(mockProducts, "Motorola"),
     );
     expect(result.current).toHaveLength(0);
   });
 
   it("handles undefined products", () => {
     const { result } = renderHook(() =>
-      useFilteredProducts(undefined, "Apple")
+      useFilteredProducts(undefined, "Apple"),
     );
     expect(result.current).toBeUndefined();
   });

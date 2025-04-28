@@ -24,7 +24,7 @@ const Header: React.FC = () => {
     {} as Record<
       string,
       CartAddRequest & { quantity: number; indices: number[] }
-    >
+    >,
   );
 
   const groupedItemsArray: (CartAddRequest & {
@@ -39,10 +39,10 @@ const Header: React.FC = () => {
       const productPromises = uniqueIds.map((id) => getProductById(id));
       const fetchedProducts: Product[] = await Promise.all(productPromises);
       const productMap = Object.fromEntries(
-        fetchedProducts.map((product) => [product.id, product])
+        fetchedProducts.map((product) => [product.id, product]),
       );
       const orderedProducts = groupedItemsArray.map(
-        (item) => productMap[item.id] || null
+        (item) => productMap[item.id] || null,
       );
       setProducts(orderedProducts);
     };

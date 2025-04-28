@@ -10,10 +10,10 @@ import "react-toastify/dist/ReactToastify.css";
 const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
   const { showSuccess, showError } = useToast();
   const [selectedStorage, setSelectedStorage] = useState(
-    product.options?.storages?.[0]?.code || 0
+    product.options?.storages?.[0]?.code || 0,
   );
   const [selectedColor, setSelectedColor] = useState(
-    product.options?.colors?.[0]?.code || 0
+    product.options?.colors?.[0]?.code || 0,
   );
 
   const { mutate: addToCartMutation, isPending } = useAddToCart();

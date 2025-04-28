@@ -10,18 +10,81 @@ import importPlugin from "eslint-plugin-import";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 
 export default [
-  { ignores: ["dist", "**/*.d.ts"] }, // Ignore .d.ts files to avoid parser errors
+  { ignores: ["dist", "**/*.d.ts"] },
+  // Configuración específica para eslint.config.js
+  {
+    files: ["eslint.config.js"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: {
+        ...globals.node,
+        process: "readonly",
+      },
+      parserOptions: {
+        sourceType: "module",
+      },
+    },
+    plugins: {
+      prettier,
+      import: importPlugin,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      "prettier/prettier": ["error"],
+      "import/no-extraneous-dependencies": "off",
+      "no-undef": "off",
+    },
+  },
+  // Configuración específica para jest.config.ts y setupTests.ts
+  {
+    files: ["jest.config.ts", "setupTests.ts"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: {
+        ...globals.node,
+        process: "readonly",
+      },
+      parser: tsParser,
+      parserOptions: {
+        project: null, // Deshabilitar type-aware linting
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tsPlugin,
+      import: importPlugin,
+      prettier,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...tsPlugin.configs.recommended.rules,
+      "prettier/prettier": ["error"],
+      "import/no-extraneous-dependencies": "off",
+      "no-undef": "off",
+    },
+    settings: {
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts"],
+      },
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: ["./tsconfig.json"],
+        },
+      },
+    },
+  },
+  // Configuración para archivos .ts y .tsx
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
         ...globals.browser,
-        process: "readonly", // Define process to fix no-undef
+        process: "readonly",
       },
       parser: tsParser,
       parserOptions: {
-        project: ["./tsconfig.json"], // Reference single tsconfig
+        project: ["./tsconfig.json", "./tsconfig.test.json"],
         tsconfigRootDir: process.cwd(),
       },
     },
@@ -94,12 +157,12 @@ export default [
       "import/resolver": {
         typescript: {
           alwaysTryTypes: true,
-          project: ["./tsconfig.json"], // Reference single tsconfig
+          project: ["./tsconfig.json", "./tsconfig.test.json"],
         },
       },
     },
   },
-  // Separate config for vite.config.ts without type-aware linting
+  // Configuración para vite.config.ts
   {
     files: ["vite.config.ts"],
     languageOptions: {
@@ -116,10 +179,12 @@ export default [
     plugins: {
       "@typescript-eslint": tsPlugin,
       import: importPlugin,
+      prettier,
     },
     rules: {
       ...js.configs.recommended.rules,
       ...tsPlugin.configs.recommended.rules,
+      "prettier/prettier": ["error"],
       "import/no-extraneous-dependencies": "off",
       "no-undef": "off",
     },
