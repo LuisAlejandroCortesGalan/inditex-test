@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { Product } from "../Types";
+import { Product } from "../types";
 
 export const useFilteredProducts = (
   products: Product[] | undefined,
