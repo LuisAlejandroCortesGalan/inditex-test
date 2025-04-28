@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ProductDescriptionProps } from "../Types/productItem";
+import { ProductDescriptionProps } from "../types/productItem";
 
 const ProductDescription: React.FC<ProductDescriptionProps> = ({ product }) => {
   return (

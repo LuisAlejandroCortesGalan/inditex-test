@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 
-import { useAddToCart } from "../Hooks/useAddToCart";
-import { useToast } from "../Hooks/useToast";
-import { ColorOption, StorageOption } from "../Types";
-import { ProductActionsProps } from "../Types/productItem";
+import { useAddToCart } from "../hooks/useAddToCart";
+import { useToast } from "../hooks/useToast";
+import { ColorOption, StorageOption } from "../types";
+import { ProductActionsProps } from "../types/productItem";
 import "react-toastify/dist/ReactToastify.css";
 
 const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {

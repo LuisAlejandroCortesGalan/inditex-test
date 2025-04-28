@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-import { CartAddRequest, Product } from "../Types";
-import { CartContextType } from "../Types/cartContext";
+import { CartAddRequest, Product } from "../types";
+import { CartContextType } from "../types/cartContext";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
@@ -70,6 +70,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext);
   if (!context) {

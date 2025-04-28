@@ -1,12 +1,12 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 
-import { useProductDetails } from "../Hooks/useProductDetails";
+import { useProductDetails } from "../hooks/useProductDetails";
 import ProductActions from "../ProductDetailComponents/ProductActions";
 import ProductDescription from "../ProductDetailComponents/ProductDescription";
 import ProductImage from "../ProductDetailComponents/ProductImage";
-import ErrorBoundary from "../Ui/ErrorBoundary";
-import LoadingSpinner from "../Ui/LoadindSpinner";
+import ErrorBoundary from "../ui/ErrorBoundary";
+import LoadingSpinner from "../ui/LoadindSpinner";
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

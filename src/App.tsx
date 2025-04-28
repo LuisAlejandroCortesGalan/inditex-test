@@ -3,11 +3,11 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { CartProvider } from "./features/Context/CartContext";
-import ProductDetailPage from "./features/Pages/ProductDetailPage";
-import ProductListPage from "./features/Pages/ProductListPage";
-import ErrorBoundary from "./features/Ui/ErrorBoundary";
-import Header from "./features/Ui/Header";
+import { CartProvider } from "./features/context/CartContext";
+import ProductDetailPage from "./features/pages/ProductDetailPage";
+import ProductListPage from "./features/pages/ProductListPage";
+import ErrorBoundary from "./features/ui/ErrorBoundary";
+import Header from "./features/ui/Header";
 import "./App.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 

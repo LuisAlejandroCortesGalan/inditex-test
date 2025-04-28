@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { addToCart as addToCartAPI } from "../Api/services";
-import { useCart } from "../Context/CartContext";
-import { CartAddRequest } from "../Types";
+import { addToCart as addToCartAPI } from "../api/services";
+import { useCart } from "../context/CartContext";
+import { CartAddRequest } from "../types";
 
 export const useAddToCart = () => {
   const { addToCart } = useCart();

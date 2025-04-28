@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-import { ToastOptions } from "../Types/Toast";
+import { ToastOptions } from "../types/Toast";
 
 const defaultOptions: ToastOptions = {
   position: "top-right",

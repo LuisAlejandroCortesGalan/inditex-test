@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ProductImageProps } from "../Types/productItem";
+import { ProductImageProps } from "../types/productItem";
 
 const ProductImage: React.FC<ProductImageProps> = ({
   imgUrl,
