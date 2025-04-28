@@ -31,11 +31,13 @@ A modern Single Page Application (SPA) built with React 19 and TypeScript for pu
 ## 🏗 Architecture
 
 ### Layers:
+
 - **UI Layer**: Renders views (Components, Pages)
 - **Logic Layer**: Manages state (Hooks, Context)
 - **Data Layer**: Handles API and cache
 
 ### Patterns:
+
 - Observer (Context API for cart)
 - Repository (data layer)
 - Component Composition
@@ -78,16 +80,15 @@ src/
 │   ├── Header.tsx
 │   ├── LoadingSpinner.tsx
 │   └── SearchBar.tsx
-├── utils/                     # Utilities
-│   └── cache.ts
 ├── App.css                    # Global CSS
 ├── App.tsx                    # Root component
-└── main.tsx                   # Entry point
+└── main.tsx                   # Entry pointt
 ```
 
 ## 🧩 Components
 
 ### UI Components:
+
 - **Header**: App title, breadcrumbs, cart count
 - **SearchBar**: Real-time filtering
 - **ProductItem**: Product card in list
@@ -98,6 +99,7 @@ src/
 - **ErrorBoundary**: Error handling
 
 ### Pages:
+
 - **ProductListPage (PLP)**: Products with search
 - **ProductDetailPage (PDP)**: Image and details columns
 
@@ -118,11 +120,13 @@ const filteredProducts = useFilteredProducts(products, searchTerm);
 ## 💾 Caching System
 
 ### Implementation:
+
 - Time-based caching in LocalStorage (1-hour expiration)
 - Automatic revalidation of expired data
 - Transparent to components
 
 ### Flow:
+
 ```
 Request → Cache Valid? → Return Cached
         → Else → Fetch API → Cache → Return
@@ -131,11 +135,13 @@ Request → Cache Valid? → Return Cached
 ## ✅ Testing
 
 ### Test Suite:
+
 - **Unit Tests**: Components and hooks
 - **Integration Tests**: User flows and interactions
 - **Mock API**: For consistent test results
 
 ### Example Test:
+
 ```typescript
 test('renders ProductItem with correct data', () => {
   render(<ProductItem product={mockProduct} />);
@@ -145,6 +151,7 @@ test('renders ProductItem with correct data', () => {
 ```
 
 ### Coverage Areas:
+
 - Component rendering
 - User interactions (clicks, form inputs)
 - API response handling
@@ -152,6 +159,7 @@ test('renders ProductItem with correct data', () => {
 - Responsive layout behavior
 
 ### Run Tests:
+
 ```bash
 npm run test        # Run all tests
 npm run test:watch  # Watch mode during development
@@ -161,16 +169,19 @@ npm run test:coverage  # Generate coverage report
 ## 🚀 Setup & Installation
 
 ### Requirements:
+
 - Node.js ≥ 18
 - npm or yarn
 
 ### Steps:
+
 1. Clone: `git clone https://github.com/your-username/mobile-shop.git`
 2. Install: `cd mobile-shop && npm install`
 3. Run: `npm run dev`
 4. Open [http://localhost:5173](http://localhost:5173)
 
 ### Scripts:
+
 - `npm run dev`: Development server
 - `npm run build`: Production build
 - `npm run lint`: Code quality check

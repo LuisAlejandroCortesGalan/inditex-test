@@ -1,4 +1,4 @@
-import { CartAddRequest, CartResponse, Product, ProductDetail } from '../types';
+import { CartAddRequest, CartResponse, Product, ProductDetail } from "../Types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -10,12 +10,14 @@ export const fetchProducts = async (): Promise<Product[]> => {
     }
     return await response.json();
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error("Error fetching products:", error);
     throw error;
   }
 };
 
-export const fetchProductDetails = async (productId: string): Promise<ProductDetail> => {
+export const fetchProductDetails = async (
+  productId: string,
+): Promise<ProductDetail> => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/product/${productId}`);
     if (!response.ok) {
@@ -28,28 +30,34 @@ export const fetchProductDetails = async (productId: string): Promise<ProductDet
   }
 };
 
-export const addToCart = async (cartRequest: CartAddRequest): Promise<CartResponse> => {
-  console.log('Sending to cart API:', cartRequest);
+export const addToCart = async (
+  cartRequest: CartAddRequest,
+): Promise<CartResponse> => {
+  console.log("Sending to cart API:", cartRequest);
   try {
     const response = await fetch(`${API_BASE_URL}/api/cart`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(cartRequest),
     });
     const responseText = await response.text();
-    console.log('Cart API response:', response.status, responseText);
+    console.log("Cart API response:", response.status, responseText);
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status} - ${responseText}`);
+      throw new Error(
+        `HTTP error! status: ${response.status} - ${responseText}`,
+      );
     }
     try {
       return JSON.parse(responseText);
     } catch (parseError) {
-      throw new Error(`Failed to parse response: ${responseText} and: ${parseError}`);
+      throw new Error(
+        `Failed to parse response: ${responseText} and: ${parseError}`,
+      );
     }
   } catch (error) {
-    console.error('Error adding to cart:', error);
+    console.error("Error adding to cart:", error);
     throw error;
   }
 };

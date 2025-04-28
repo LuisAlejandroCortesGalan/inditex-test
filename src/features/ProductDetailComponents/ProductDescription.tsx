@@ -1,13 +1,15 @@
-import React from 'react';
-import { ProductDescriptionProps } from '../types/productItem';
+import React from "react";
 
+import { ProductDescriptionProps } from "../Types/productItem";
 
 const ProductDescription: React.FC<ProductDescriptionProps> = ({ product }) => {
   return (
     <div className="product-description">
-      <h2>{product.brand} {product.model}</h2>
+      <h2>
+        {product.brand} {product.model}
+      </h2>
       <p className="product-price">€{product.price}</p>
-      
+
       <div className="product-specs">
         <h3>Specifications</h3>
         <ul>
@@ -34,12 +36,14 @@ const ProductDescription: React.FC<ProductDescriptionProps> = ({ product }) => {
           <li>
             <span className="spec-label">Cameras:</span>
             <span className="spec-value">
-              {Array.isArray(product.primaryCamera) 
-                ? product.primaryCamera.join(', ') 
-                : product.primaryCamera} (Primary), {
-                Array.isArray(product.secondaryCmera) 
-                  ? product.secondaryCmera.join(', ') 
-                  : product.secondaryCmera} (Secondary)
+              {Array.isArray(product.primaryCamera)
+                ? product.primaryCamera.join(", ")
+                : product.primaryCamera}{" "}
+              (Primary),{" "}
+              {Array.isArray(product.secondaryCmera)
+                ? product.secondaryCmera.join(", ")
+                : product.secondaryCmera}{" "}
+              (Secondary)
             </span>
           </li>
           <li>

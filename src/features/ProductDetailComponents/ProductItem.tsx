@@ -1,15 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ProductItemProps } from '../types/productItem';
+import React from "react";
+import { Link } from "react-router-dom";
+
+import { ProductItemProps } from "../Types/productItem";
 
 const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   return (
     <div className="product-item">
       <Link to={`/product/${product.id}`}>
         <div className="product-image">
-          <img 
-            src={product.imgUrl} 
-            alt={`${product.brand} ${product.model}`} 
+          <img
+            src={product.imgUrl}
+            alt={`${product.brand} ${product.model}`}
             loading="lazy"
           />
         </div>

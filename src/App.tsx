@@ -1,14 +1,15 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { CartProvider } from "./features/context/CartContext";
-import Header from "./features/ui/header";
-import ProductListPage from "./features/pages/ProductListPage";
-import ProductDetailPage from "./features/pages/ProductDetailPage";
-import ErrorBoundary from "./features/ui/ErrorBoundary";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import { CartProvider } from "./features/Context/CartContext";
+import ProductDetailPage from "./features/Pages/ProductDetailPage";
+import ProductListPage from "./features/Pages/ProductListPage";
+import ErrorBoundary from "./features/Ui/ErrorBoundary";
+import Header from "./features/Ui/Header";
 import "./App.css";
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // Create a client
 const queryClient = new QueryClient({

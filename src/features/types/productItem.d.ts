@@ -1,10 +1,10 @@
 export interface ProductActionsProps {
-    product: ProductDetail;
-  }
-  
+  product: ProductDetail;
+}
+
 export interface ProductDescriptionProps {
-    product: ProductDetail;
-  }
+  product: ProductDetail;
+}
 
 export interface ProductImageProps {
   imgUrl: string;
