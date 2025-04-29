@@ -1,89 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { useCart } from "../../domains/cart/context/CartContext";
-import { Product, CartAddRequest } from "../../domains/products/types";
+import { useCartLogic } from "../../domains/cart/hooks/useCartLogic";
+import { getBreadcrumbs } from "../utils/breadcrumbs";
 
 const Header: React.FC = () => {
-  const { cartCount, cartItems, getProductById, removeFromCart } = useCart();
+  const { cartCount } = useCart();
+  const {
+    groupedItemsArray,
+    products,
+    totalPrice,
+    isLoading,
+    error,
+    removeCartItem,
+  } = useCartLogic();
   const location = useLocation();
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [products, setProducts] = useState<(Product | null)[]>([]);
-
-  // Group cartItems by id, colorCode, storageCode
-  const groupedCartItems = cartItems.reduce(
-    (acc, item, index) => {
-      const key = `${item.id}-${item.colorCode}-${item.storageCode}`;
-      if (!acc[key]) {
-        acc[key] = { ...item, quantity: 0, indices: [] };
-      }
-      acc[key].quantity += 1;
-      acc[key].indices.push(index);
-      return acc;
-    },
-    {} as Record<
-      string,
-      CartAddRequest & { quantity: number; indices: number[] }
-    >,
-  );
-
-  const groupedItemsArray: (CartAddRequest & {
-    quantity: number;
-    indices: number[];
-  })[] = Object.values(groupedCartItems);
-
-  // Fetch product details for unique product IDs
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const uniqueIds = Array.from(new Set(cartItems.map((item) => item.id)));
-      const productPromises = uniqueIds.map((id) => getProductById(id));
-      const fetchedProducts: Product[] = await Promise.all(productPromises);
-      const productMap = Object.fromEntries(
-        fetchedProducts.map((product) => [product.id, product]),
-      );
-      const orderedProducts = groupedItemsArray.map(
-        (item) => productMap[item.id] || null,
-      );
-      setProducts(orderedProducts);
-    };
-    fetchProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartItems, getProductById]);
-
-  const calculateTotalPrice = (): number => {
-    return groupedItemsArray.reduce((total, item, index) => {
-      const product = products[index];
-      if (!product || !product.price) return total;
-      const price = parseFloat(product.price);
-      if (isNaN(price)) return total;
-      return total + price * item.quantity;
-    }, 0);
-  };
-
-  const totalPrice = calculateTotalPrice();
-
-  const getBreadcrumbs = () => {
-    const path = location.pathname;
-    if (path === "/") {
-      return "Home";
-    }
-    if (path.startsWith("/product/")) {
-      return (
-        <span className="breadcrumbs">
-          <Link to="/">Home</Link> / Product Details
-        </span>
-      );
-    }
-    return null;
-  };
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
-  };
-
-  const handleRemoveUnit = (indices: number[]) => {
-    const lastIndex = indices[indices.length - 1];
-    removeFromCart(lastIndex);
   };
 
   return (
@@ -95,7 +31,7 @@ const Header: React.FC = () => {
               Mobile Shop
             </Link>
           </h1>
-          <nav>{getBreadcrumbs()}</nav>
+          <nav>{getBreadcrumbs(location.pathname)}</nav>
         </div>
         <div className="cart-icon">
           <button
@@ -103,7 +39,8 @@ const Header: React.FC = () => {
             className="cart-icon"
             aria-label="View cart"
           >
-            <i className="fa fa-shopping-cart"></i>
+            <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+            <span className="sr-only">Cart</span>
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </button>
         </div>
@@ -117,10 +54,15 @@ const Header: React.FC = () => {
                 className="cart-modal-close"
                 aria-label="Close cart"
               >
-                <i className="fa fa-times"></i>
+                <i className="fa fa-times" aria-hidden="true"></i>
+                <span className="sr-only">Close</span>
               </button>
             </div>
-            {groupedItemsArray.length === 0 ? (
+            {error ? (
+              <p className="cart-error">Error: {error}</p>
+            ) : isLoading ? (
+              <p className="cart-loading">Loading products...</p>
+            ) : groupedItemsArray.length === 0 ? (
               <p className="cart-empty">Your cart is empty.</p>
             ) : (
               <div>
@@ -144,25 +86,32 @@ const Header: React.FC = () => {
                           Color: {item.colorCode} | Storage: {item.storageCode}
                         </p>
                         <p className="cart-item-price">
-                          ${parseFloat(product.price)}
+                          ${parseFloat(product.price).toFixed(2)}
                         </p>
                         <p className="cart-item-quantity">
                           Quantity: {item.quantity}
                         </p>
                       </div>
                       <button
-                        onClick={() => handleRemoveUnit(item.indices)}
+                        onClick={() => {
+                          console.log(
+                            "Delete button clicked for indices:",
+                            item.indices,
+                          );
+                          removeCartItem(item.indices);
+                        }}
                         className="cart-item-remove"
-                        aria-label="Remove one unit"
+                        aria-label={`Remove one ${product.brand} ${product.model} from cart`}
                       >
-                        <i className="fa fa-trash"></i>
+                        <i className="fa fa-trash" aria-hidden="true"></i>
+                        <span className="sr-only">Remove</span>
                       </button>
                     </div>
                   );
                 })}
                 <div className="cart-total">
                   <p>
-                    <strong>Total:</strong> ${totalPrice}
+                    <strong>Total:</strong> ${totalPrice.toFixed(2)}
                   </p>
                 </div>
                 <Link
