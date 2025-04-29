@@ -1,6 +1,6 @@
 import React from "react";
 
-import { SearchBarProps } from "../types/searchBar";
+import { SearchBarProps } from "../../shared/types/searchBar";
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchTerm,
