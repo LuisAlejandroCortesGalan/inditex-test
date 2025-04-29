@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 
-import { useFilteredProducts } from "../src/features/Hooks/useFilteredProducts";
+import { useFilteredProducts } from "../../domains/products/hooks/useFilteredProducts";
 import "@testing-library/jest-dom";
 
 describe("useFilteredProducts", () => {

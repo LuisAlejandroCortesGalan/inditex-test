@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { useCart } from "../context/CartContext";
-import { Product, CartAddRequest } from "../types";
+import { useCart } from "../../domains/cart/context/CartContext";
+import { Product, CartAddRequest } from "../../domains/products/types";
 
 const Header: React.FC = () => {
   const { cartCount, cartItems, getProductById, removeFromCart } = useCart();
@@ -90,9 +90,11 @@ const Header: React.FC = () => {
     <header className="header">
       <div className="container">
         <div className="header-left">
-          <Link to="/" className="logo">
-            Mobile Shop
-          </Link>
+          <h1>
+            <Link to="/" className="logo">
+              Mobile Shop
+            </Link>
+          </h1>
           <nav>{getBreadcrumbs()}</nav>
         </div>
         <div className="cart-icon">

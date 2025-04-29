@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 
-import { useAddToCart } from "../hooks/useAddToCart";
-import { useToast } from "../hooks/useToast";
+import { useAddToCart } from "../../cart/hooks/useAddToCart";
+import { useToast } from "../../notifications/hooks/useToast";
 import { ColorOption, StorageOption } from "../types";
 import { ProductActionsProps } from "../types/productItem";
 import "react-toastify/dist/ReactToastify.css";
