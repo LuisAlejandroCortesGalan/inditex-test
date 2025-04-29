@@ -1,209 +1,236 @@
-# 📱 Mobile Shop Application
+📱 Mobile Shop Application
+A modern Single Page Application (SPA) built with React 19 and TypeScript for purchasing mobile devices. Developed for an Inditex front-end technical test, this project showcases a scalable, modular architecture, robust functionality, and a polished user experience.
+🔗 Live Demo
+📋 Table of Contents
 
-A modern Single Page Application (SPA) built with React 19 and TypeScript for purchasing mobile devices. Developed for an Inditex front-end technical test.
+Features
+Technologies
+Architecture
+Project Structure
+Components
+Custom Hooks
+Caching System
+Testing
+Setup & Installation
+Responsive Design
+Design Decisions
 
-🔗 **[Live Demo](https://inditex-test-eta.vercel.app/)**
+🌟 Features
 
-## 📋 Table of Contents
+Product Listing: Browse mobile devices with real-time search by brand or model.
+Product Details: View detailed specifications, select storage/color options, and add to cart.
+Cart Management: Add products to the cart with persistent count via LocalStorage.
+Notifications: User feedback via toast notifications (react-toastify).
+Error Handling: Robust error boundaries with fallback UI for unexpected errors.
+Responsive Design: Mobile-first layout with adaptive grids and multiple breakpoints.
+Testing: Comprehensive unit and integration tests using Jest and React Testing Library.
+Performance: Efficient caching with TanStack Query, lazy-loaded images, and optimized build with Vite.
 
-- [Technologies](#-technologies)
-- [Architecture](#-architecture)
-- [Project Structure](#-project-structure)
-- [Components](#-components)
-- [Custom Hooks](#-custom-hooks)
-- [Caching System](#-caching-system)
-- [Testing](#-testing)
-- [Setup & Installation](#-setup--installation)
-- [Responsive Design](#-responsive-design)
+🛠 Technologies
 
-## 🛠 Technologies
+React 19: Modern UI framework for dynamic, component-based interfaces.
+TypeScript 5.7: Static typing for enhanced code reliability and developer productivity.
+React Router 6: Declarative routing for seamless navigation.
+TanStack Query 5: Data fetching, caching, and state synchronization.
+Context API: Lightweight global state management for cart functionality.
+Pure CSS: Custom styling with CSS variables for consistent theming.
+Vite 6: Fast development server and optimized production build tool.
+ESLint & Prettier: Code quality and formatting enforcement.
+LocalStorage: Persistent cart count and API response caching.
+Jest & React Testing Library: Robust testing suite for components and hooks.
+React Toastify: User-friendly notification system.
+FontAwesome: Icons for enhanced UI elements.
 
-- **React 19**: UI framework
-- **TypeScript 5.7**: Static typing
-- **React Router 6**: Routing
-- **Context API**: State management
-- **Pure CSS**: Custom styling
-- **Vite 6**: Fast build tool
-- **ESLint & Prettier**: Code quality
-- **LocalStorage**: Data persistence
-- **Jest & React Testing Library**: Testing
+🏗 Architecture
+The application adopts a modular architecture with clear separation of concerns, drawing inspiration from Screaming Architecture and Hexagonal Architecture to ensure scalability, maintainability, and alignment with business intent.
+Layers
 
-## 🏗 Architecture
+UI Layer: Renders views using components and pages.
+Logic Layer: Manages business logic and state through hooks and Context API.
+Data Layer: Handles API interactions and caching via services and TanStack Query.
 
-### Layers:
+Patterns
 
-- **UI Layer**: Renders views (Components, Pages)
-- **Logic Layer**: Manages state (Hooks, Context)
-- **Data Layer**: Handles API and cache
+Observer: Context API for reactive cart state management.
+Repository: API services as a data access layer.
+Component Composition: Reusable, single-responsibility components.
+Custom Hooks: Encapsulated logic for reusability and testability.
+Ports and Adapters: Services act as adapters to isolate business logic from external APIs.
 
-### Patterns:
+Architectural Decision
+The modular architecture organizes code by business domains (products, cart, notifications), balancing the project's moderate size with the need for scalability:
 
-- Observer (Context API for cart)
-- Repository (data layer)
-- Component Composition
-- Custom Hooks for logic
+Screaming Architecture: Inspired by my familiarity with this pattern, the structure reflects the application's core domains (e.g., products for product listing and details), making the codebase intuitive and aligned with business goals.
+Hexagonal Architecture Influence: Services (productServices, cartServices) act as ports, decoupling business logic from external APIs. This facilitates testing and potential integrations with different backends.
+Why Modular?: For a project of this scope, a fully hexagonal or Domain-Driven Design approach would be excessive, while a flat structure would hinder maintainability. The modular design strikes a balance, leveraging my expertise in Screaming Architecture while incorporating hexagonal principles for scalability. It supports future features (e.g., user authentication, order history) without requiring significant refactoring.
 
-## 📂 Project Structure
-
-```
+📂 Project Structure
+The project is organized by business domains under domains/, with shared utilities in shared/ to enhance clarity and scalability:
 src/
-├── __tests__/                 # Test files
-│   ├── components/
-│   ├── hooks/
-│   └── pages/
-├── api/                       # API services
-│   └── services.ts
-├── context/                   # State management
-│   └── cartContext.tsx
-├── Hooks/                     # Custom hooks
-│   ├── useAddToCart/
-│   ├── useFilteredProducts.tsx
-│   ├── useProductDetails/
-│   ├── useProducts/
-│   └── useToast/
-├── Pages/                     # Pages
-│   ├── ProductDetailPage/
-│   └── ProductListPage/
-├── ProductDetailComponents/   # Product components
-│   ├── ProductActions.tsx
-│   ├── ProductDescription.tsx
-│   ├── ProductImage.tsx
-│   └── ProductItem.tsx
-├── types/                     # TypeScript types
-│   ├── CartContext.d.ts
-│   ├── ErrorBoundary.d.ts
-│   ├── Index.d.ts
-│   ├── ProductItem.d.ts
-│   └── Toast.d.ts
-├── UI/                        # UI components
-│   ├── ErrorBoundary.tsx
-│   ├── Header.tsx
-│   ├── LoadingSpinner.tsx
-│   └── SearchBar.tsx
-├── App.css                    # Global CSS
-├── App.tsx                    # Root component
-└── main.tsx                   # Entry point
-```
+├── __tests__/                     # Unit and integration tests
+│   ├── products/
+│   │   ├── ProductItem.test.tsx
+│   │   └── useFilteredProducts.test.tsx
+│   └── ui/
+│       └── SearchBar.test.tsx
+├── domains/                      # Business domains
+│   ├── products/                 # Product management
+│   │   ├── components/           # Domain-specific components
+│   │   │   ├── ProductActions.tsx
+│   │   │   ├── ProductDescription.tsx
+│   │   │   ├── ProductImage.tsx
+│   │   │   └── ProductItem.tsx
+│   │   ├── hooks/                # Domain-specific hooks
+│   │   │   ├── useFilteredProducts.ts
+│   │   │   ├── useProductDetails.ts
+│   │   │   └── useProducts.ts
+│   │   ├── pages/                # Domain-specific pages
+│   │   │   ├── ProductDetailPage.tsx
+│   │   │   └── ProductListPage.tsx
+│   │   ├── services/             # API services
+│   │   │   └── productServices.ts
+│   │   └── types/                # Domain-specific types
+│   │       ├── Product.ts
+│   │       └── ProductDetail.ts
+│   ├── cart/                     # Cart management
+│   │   ├── context/              # Cart state
+│   │   │   └── CartContext.tsx
+│   │   ├── hooks/                # Cart hooks
+│   │   │   └── useAddToCart.ts
+│   │   ├── services/             # Cart API services
+│   │   │   └── cartServices.ts
+│   │   └── types/                # Cart types
+│   │       └── Cart.ts
+│   └── notifications/            # Notification system
+│       ├── hooks/                # Notification hooks
+│       │   └── useToast.ts
+│       └── types/                # Notification types
+│           └── Toast.ts
+├── shared/                       # Shared utilities
+│   ├── components/               # Generic components
+│   │   ├── ErrorBoundary.tsx
+│   │   ├── Header.tsx
+│   │   ├── LoadingSpinner.tsx
+│   │   └── SearchBar.tsx
+│   ├── types/                    # Shared types
+│   │   └── ErrorBoundary.ts
+│   └── styles/                   # Global styles
+│       └── App.css
+├── App.tsx                       # Root component
+└── main.tsx                      # Entry point
 
-## 🧩 Components
+This structure promotes modularity, separating domain-specific logic from shared utilities, and aligns with enterprise-grade practices.
+🧩 Components
+UI Components
 
-### UI Components:
+Header: Displays the app title, breadcrumbs, and cart count with FontAwesome icons.
+SearchBar: Enables real-time filtering by brand or model with accessible input.
+ProductItem: Renders product cards with image, brand, model, and price.
+ProductImage: Displays product visuals with lazy loading for performance.
+ProductDescription: Presents detailed product specifications in a structured format.
+ProductActions: Manages storage/color selection and add-to-cart functionality.
+LoadingSpinner: Visual indicator for loading states with ARIA accessibility.
+ErrorBoundary: Catches runtime errors and renders a fallback UI.
 
-- **Header**: App title, breadcrumbs, cart count
-- **SearchBar**: Real-time filtering
-- **ProductItem**: Product card in list
-- **ProductImage**: Product visuals
-- **ProductDescription**: Product specifications
-- **ProductActions**: Storage/color selection and add button
-- **LoadingSpinner**: Loading indicator
-- **ErrorBoundary**: Error handling
+Pages
 
-### Pages:
+ProductListPage (PLP): Lists products with search and filtering capabilities.
+ProductDetailPage (PDP): Displays product details with image and action columns.
 
-- **ProductListPage (PLP)**: Products with search
-- **ProductDetailPage (PDP)**: Image and details columns
-
-## 🪝 Custom Hooks
-
-```typescript
+🪝 Custom Hooks
+Custom hooks encapsulate logic for reusability and maintainability:
 // Example usage
-const { products, loading, error } = useProducts();
+const { data: products, isLoading, error } = useProducts();
 const filteredProducts = useFilteredProducts(products, searchTerm);
-```
 
-- **useProducts**: Fetches product list
-- **useFilteredProducts**: Real-time filtering
-- **useProductDetails**: Loads product details
-- **useAddToCart**: Manages cart operations
-- **useToast**: Notification system
 
-## 💾 Caching System
+useProducts: Fetches the product list using TanStack Query with caching.
+useFilteredProducts: Filters products in real-time based on search input.
+useProductDetails: Retrieves detailed product data by ID.
+useAddToCart: Handles cart mutations and updates with optimistic updates.
+useToast: Integrates react-toastify for user notifications (e.g., success/error messages).
 
-### Implementation:
+💾 Caching System
+Implementation
 
-- Time-based caching in LocalStorage (1-hour expiration)
-- Automatic revalidation of expired data
-- Transparent to components
+TanStack Query: Manages in-memory caching with a 1-hour stale time for products and details.
+LocalStorage: Persists cart count and cached API responses with a 1-hour expiration.
+Background Revalidation: Automatically refetches stale data to keep the UI up-to-date.
 
-### Flow:
+Flow
+Request → Check Cache (TanStack Query/LocalStorage) → Valid? → Return Cached
+        → Else → Fetch API → Update Cache → Return
 
-```
-Request → Cache Valid? → Return Cached
-        → Else → Fetch API → Cache → Return
-```
+Benefits
 
-## ✅ Testing
+Minimizes API requests for better performance.
+Enhances user experience with instant data rendering.
+Supports partial offline functionality.
+Reduces server load.
 
-### Test Suite:
+✅ Testing
+Test Suite
 
-- **Unit Tests**: Components and hooks
-- **Integration Tests**: User flows and interactions
-- **Mock API**: For consistent test results
+Unit Tests: Validate individual components and hooks.
+Integration Tests: Simulate user flows (e.g., searching, adding to cart).
+Mock API: Use mocked responses for consistent and deterministic tests.
 
-### Example Test:
-
-```typescript
+Example Test
 test('renders ProductItem with correct data', () => {
   render(<ProductItem product={mockProduct} />);
   expect(screen.getByText('Apple')).toBeInTheDocument();
   expect(screen.getByText('iPhone 13')).toBeInTheDocument();
 });
-```
 
-### Coverage Areas:
+Coverage Areas
 
-- Component rendering
-- User interactions (clicks, form inputs)
-- API response handling
-- Error state management
-- Responsive layout behavior
+Component rendering and prop validation.
+User interactions (clicks, form inputs, navigation).
+API response handling (success, error, loading).
+Error boundary behavior under failure conditions.
+Responsive layout across multiple breakpoints.
 
-### Run Tests:
+Run Tests
+npm run test          # Run all tests
+npm run test:watch    # Watch mode for development
+npm run test:coverage # Generate coverage report
 
-```bash
-npm run test        # Run all tests
-npm run test:watch  # Watch mode during development
-npm run test:coverage  # Generate coverage report
-```
+🚀 Setup & Installation
+Requirements
 
-## 🚀 Setup & Installation
+Node.js ≥ 18
+npm or yarn
 
-### Requirements:
+Steps
 
-- Node.js ≥ 18
-- npm or yarn
+Clone the repository:git clone https://github.com/your-username/mobile-shop.git
 
-### Steps:
 
-1. Clone: `git clone https://github.com/your-username/mobile-shop.git`
-2. Install: `cd mobile-shop && npm install`
-3. Run: `npm run dev`
-4. Open [http://localhost:5173](http://localhost:5173)
+Install dependencies:cd mobile-shop && npm install
 
-### Scripts:
 
-- `npm run dev`: Development server
-- `npm run build`: Production build
-- `npm run lint`: Code quality check
-- `npm run test`: Run tests
-- `npm run preview`: Preview build
+Start the development server:npm run dev
 
-## 📱 Responsive Design
 
-- Mobile-first approach
-- Breakpoints: 480px, 768px, 992px, 1200px
-- Maximum 4 products per row (adjusts by screen)
-- Flexbox and Grid layouts
-- CSS variables for consistency
+Open http://localhost:5173 in your browser.
 
-```css
-.products-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-}
-@media (min-width: 768px) {
-  .products-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-```
+Scripts
+
+npm run dev: Launches the Vite development server with hot module replacement.
+npm run build: Generates an optimized production build with Rollup.
+npm run lint: Checks code quality with ESLint.
+npm run lint:fix: Automatically fixes linting issues.
+npm run format: Formats code with Prettier.
+npm run format:check: Verifies formatting compliance.
+npm run test: Runs the test suite with Jest.
+npm run preview: Previews the production build locally.
+
+📱 Responsive Design
+The application is built with a mobile-first approach to ensure a seamless experience across devices:
+
+Breakpoints: 480px, 768px, 992px, 1200px.
+Product Grid: Adapts from 1 to 4 columns based on screen width.
+Layouts: Leverages Flexbox and CSS Grid for flexible, responsive designs.
+CSS Variables: Ensures consistent theming and simplifies style maintenance.
+Accessibility: Includes ARIA attributes and keyboard
+

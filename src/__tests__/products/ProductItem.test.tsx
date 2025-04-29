@@ -3,7 +3,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router-dom";
 
-import ProductItem from "../src/features/productDetailComponents/ProductItem";
+import ProductItem from "../../domains/products/components/ProductItem";
 
 describe("ProductItem", () => {
   const mockProduct = {

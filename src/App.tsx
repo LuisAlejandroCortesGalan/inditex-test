@@ -3,12 +3,12 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { CartProvider } from "./features/context/CartContext";
-import ProductDetailPage from "./features/pages/ProductDetailPage";
-import ProductListPage from "./features/pages/ProductListPage";
-import ErrorBoundary from "./features/ui/ErrorBoundary";
-import Header from "./features/ui/Header";
-import "./App.css";
+import { CartProvider } from "./domains/cart/context/CartContext";
+import ProductDetailPage from "./domains/products/pages/ProductDetailPage";
+import ProductListPage from "./domains/products/pages/ProductListPage";
+import ErrorBoundary from "./shared/components/ErrorBoundary";
+import Header from "./shared/components/Header";
+import "./shared/styles/App.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // Create a client

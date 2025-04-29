@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-import { CartAddRequest, Product } from "../types";
+import { CartAddRequest, Product } from "src/domains/products/types";
+
 import { CartContextType } from "../types/cartContext";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -18,7 +19,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!stored) return;
 
       const { items, timestamp } = JSON.parse(stored);
-      const oneWeek = 1000 * 60 * 60 * 24 * 7; // 7 days
+      const oneWeek = 1000 * 60 * 60;
       if (!timestamp || Date.now() - timestamp > oneWeek) {
         localStorage.removeItem("cart_items");
         return;
