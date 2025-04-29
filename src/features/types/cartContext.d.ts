@@ -8,4 +8,5 @@ export interface CartContextType {
   addToCart: (item: CartAddRequest) => void;
   removeFromCart: (index: number) => void;
   getProductById: (id: string) => Promise<Product>;
+  clearCart: () => void;
 }

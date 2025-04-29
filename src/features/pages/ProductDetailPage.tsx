@@ -2,9 +2,9 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 
 import { useProductDetails } from "../hooks/useProductDetails";
-import ProductActions from "../ProductDetailComponents/ProductActions";
-import ProductDescription from "../ProductDetailComponents/ProductDescription";
-import ProductImage from "../ProductDetailComponents/ProductImage";
+import ProductActions from "../productDetailComponents/ProductActions";
+import ProductDescription from "../productDetailComponents/ProductDescription";
+import ProductImage from "../productDetailComponents/ProductImage";
 import ErrorBoundary from "../ui/ErrorBoundary";
 import LoadingSpinner from "../ui/LoadindSpinner";
 

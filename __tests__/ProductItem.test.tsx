@@ -3,7 +3,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router-dom";
 
-import ProductItem from "../src/features/ProductDetailComponents/ProductItem";
+import ProductItem from "../src/features/productDetailComponents/ProductItem";
 
 describe("ProductItem", () => {
   const mockProduct = {
@@ -15,7 +15,15 @@ describe("ProductItem", () => {
   };
 
   const renderWithRouter = (ui: React.ReactElement) => {
-    return render(<BrowserRouter>{ui}</BrowserRouter>);
+    const routerOptions = {
+      future: {
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      },
+    };
+    return render(
+      <BrowserRouter future={routerOptions.future}>{ui}</BrowserRouter>,
+    );
   };
 
   it("renders product information correctly", () => {

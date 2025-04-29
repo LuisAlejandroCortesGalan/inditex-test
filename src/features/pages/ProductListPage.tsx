@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useFilteredProducts } from "../hooks/useFilteredProducts";
 import { useProducts } from "../hooks/useProducts";
-import ProductItem from "../ProductDetailComponents/ProductItem";
+import ProductItem from "../productDetailComponents/ProductItem";
 import ErrorBoundary from "../ui/ErrorBoundary";
 import LoadingSpinner from "../ui/LoadindSpinner";
 import SearchBar from "../ui/SearchBar";

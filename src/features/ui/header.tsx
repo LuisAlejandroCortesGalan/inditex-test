@@ -90,9 +90,11 @@ const Header: React.FC = () => {
     <header className="header">
       <div className="container">
         <div className="header-left">
-          <Link to="/" className="logo">
-            Mobile Shop
-          </Link>
+          <h1>
+            <Link to="/" className="logo">
+              Mobile Shop
+            </Link>
+          </h1>
           <nav>{getBreadcrumbs()}</nav>
         </div>
         <div className="cart-icon">

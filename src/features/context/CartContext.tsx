@@ -9,23 +9,43 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL;
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [cartItems, setCartItems] = useState<CartAddRequest[]>(() => {
-    const items = JSON.parse(localStorage.getItem("cart_items") || "[]");
-    console.log("Initialized cartItems from localStorage:", items);
-    return items;
-  });
+  const [cartItems, setCartItems] = useState<CartAddRequest[]>([]);
 
-  const cartCount = cartItems.length;
-
-  // Sync localStorage when cartItems change
+  // Load cart items with expiration check
   useEffect(() => {
-    console.log("Saving cartItems to localStorage:", cartItems);
-    localStorage.setItem("cart_items", JSON.stringify(cartItems));
+    try {
+      const stored = localStorage.getItem("cart_items");
+      if (!stored) return;
+
+      const { items, timestamp } = JSON.parse(stored);
+      const oneWeek = 1000 * 60 * 60 * 24 * 7; // 7 days
+      if (!timestamp || Date.now() - timestamp > oneWeek) {
+        localStorage.removeItem("cart_items");
+        return;
+      }
+
+      setCartItems(Array.isArray(items) ? items.slice(0, 50) : []); // Limit to 50 items
+    } catch (error) {
+      console.error("Failed to parse cart_items:", error);
+      localStorage.removeItem("cart_items");
+    }
+  }, []);
+
+  // Save cart items with timestamp
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      localStorage.removeItem("cart_items");
+      return;
+    }
+    localStorage.setItem(
+      "cart_items",
+      JSON.stringify({ items: cartItems, timestamp: Date.now() }),
+    );
   }, [cartItems]);
 
   const addToCart = (item: CartAddRequest) => {
     console.log("Adding to cart:", item);
-    setCartItems((prevItems) => [...prevItems, item]);
+    setCartItems((prevItems) => [...prevItems, item].slice(0, 50)); // Limit to 50
   };
 
   const removeFromCart = (index: number) => {
@@ -37,12 +57,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const clearCart = () => {
+    console.log("Clearing cart");
+    setCartItems([]);
+    localStorage.removeItem("cart_items");
+  };
+
   const getProductById = async (id: string): Promise<Product> => {
     try {
       const response = await fetch(`${API_BASE}/api/product/${id}`);
       if (!response.ok) throw new Error(`Failed to fetch product ${id}`);
-      const product = await response.json();
-      return product;
+      return await response.json();
     } catch (error) {
       console.error(`Failed to fetch product ${id}:`, error);
       return {
@@ -58,10 +83,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <CartContext.Provider
       value={{
-        cartCount,
+        cartCount: cartItems.length,
         cartItems,
         addToCart,
         removeFromCart,
+        clearCart,
         getProductById,
       }}
     >

@@ -21,11 +21,18 @@ const queryClient = new QueryClient({
   },
 });
 
+const routerOptions = {
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  },
+};
+
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
-        <Router>
+        <Router future={routerOptions.future}>
           <ErrorBoundary>
             <div className="app">
               <Header />

@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 
-import SearchBar from "../src/features/Ui/SearchBar";
+import SearchBar from "../src/features/ui/SearchBar";
 import "@testing-library/jest-dom";
 
 describe("SearchBar", () => {
