@@ -24,7 +24,6 @@ const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
       colorCode: selectedColor,
       storageCode: selectedStorage,
     };
-    console.log("Adding to cart:", cartRequest);
     addToCartMutation(cartRequest, {
       onSuccess: () => {
         showSuccess("Product added to cart!");
