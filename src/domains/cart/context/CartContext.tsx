@@ -12,7 +12,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [cartItems, setCartItems] = useState<CartAddRequest[]>([]);
 
-  // Load cart items with expiration check
   useEffect(() => {
     try {
       const stored = localStorage.getItem("cart_items");
@@ -25,14 +24,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         return;
       }
 
-      setCartItems(Array.isArray(items) ? items.slice(0, 50) : []); // Limit to 50 items
+      setCartItems(Array.isArray(items) ? items.slice(0, 50) : []);
     } catch (error) {
       console.error("Failed to parse cart_items:", error);
       localStorage.removeItem("cart_items");
     }
   }, []);
 
-  // Save cart items with timestamp
   useEffect(() => {
     if (cartItems.length === 0) {
       localStorage.removeItem("cart_items");
@@ -46,7 +44,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const addToCart = (item: CartAddRequest) => {
     console.log("Adding to cart:", item);
-    setCartItems((prevItems) => [...prevItems, item].slice(0, 50)); // Limit to 50
+    setCartItems((prevItems) => [...prevItems, item].slice(0, 50));
   };
 
   const removeFromCart = (index: number) => {

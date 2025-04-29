@@ -1,236 +1,267 @@
-📱 Mobile Shop Application
-A modern Single Page Application (SPA) built with React 19 and TypeScript for purchasing mobile devices. Developed for an Inditex front-end technical test, this project showcases a scalable, modular architecture, robust functionality, and a polished user experience.
-🔗 Live Demo
-📋 Table of Contents
+# Inditex Test App
 
-Features
-Technologies
-Architecture
-Project Structure
-Components
-Custom Hooks
-Caching System
-Testing
-Setup & Installation
-Responsive Design
-Design Decisions
+Welcome to the **Inditex Test App**, a sleek Single Page Application (SPA) crafted for the Inditex Front-End Test. This React-based project delivers a seamless mobile device shopping experience with a Product List Page (PLP), Product Details Page (PDP), real-time search, API-driven cart functionality, and robust caching. Below, I'll guide you through the project, explain how it meets the test requirements, and share my reasoning behind key technical decisions—particularly my use of TypeScript and Vite—while highlighting my readiness to adapt if needed.
 
-🌟 Features
+**Live Demo**: [Inditex Test App](https://inditex-test-eta.vercel.app/)
 
-Product Listing: Browse mobile devices with real-time search by brand or model.
-Product Details: View detailed specifications, select storage/color options, and add to cart.
-Cart Management: Add products to the cart with persistent count via LocalStorage.
-Notifications: User feedback via toast notifications (react-toastify).
-Error Handling: Robust error boundaries with fallback UI for unexpected errors.
-Responsive Design: Mobile-first layout with adaptive grids and multiple breakpoints.
-Testing: Comprehensive unit and integration tests using Jest and React Testing Library.
-Performance: Efficient caching with TanStack Query, lazy-loaded images, and optimized build with Vite.
+## Table of Contents
+- [Test Requirements Overview](#test-requirements-overview)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [Directory Structure](#directory-structure)
+- [Installation](#installation)
+- [Scripts](#scripts)
+- [Testing](#testing)
+- [ESLint & Prettier](#eslint--prettier)
+- [CI/CD Configuration](#cicd-configuration)
+- [Technical Decisions](#technical-decisions)
+  - [Why TypeScript?](#why-typescript)
+  - [Why Vite Instead of Webpack?](#why-vite-instead-of-webpack)
+  - [Other Enhancements](#other-enhancements)
 
-🛠 Technologies
+## Test Requirements Overview
+The Inditex Front-End Test challenged me to build a mini-application for purchasing mobile devices, featuring two views: a **Product List Page (PLP)** and a **Product Details Page (PDP)**. The requirements included:
+- A React-based SPA with client-side routing.
+- Specific components: header, search bar, product list items, product image, description, and actions.
+- Real-time search filtering by brand and model.
+- API integration for product listing, details, and cart actions.
+- Caching of API responses with a 1-hour expiration.
+- Scripts for development, production builds, testing, and linting.
+- A public repository with evolutionary commits and a detailed README.
 
-React 19: Modern UI framework for dynamic, component-based interfaces.
-TypeScript 5.7: Static typing for enhanced code reliability and developer productivity.
-React Router 6: Declarative routing for seamless navigation.
-TanStack Query 5: Data fetching, caching, and state synchronization.
-Context API: Lightweight global state management for cart functionality.
-Pure CSS: Custom styling with CSS variables for consistent theming.
-Vite 6: Fast development server and optimized production build tool.
-ESLint & Prettier: Code quality and formatting enforcement.
-LocalStorage: Persistent cart count and API response caching.
-Jest & React Testing Library: Robust testing suite for components and hooks.
-React Toastify: User-friendly notification system.
-FontAwesome: Icons for enhanced UI elements.
+I've addressed all these requirements while making informed decisions to enhance quality and performance. Where I deviated from suggestions (e.g., using TypeScript instead of JavaScript, Vite instead of a Webpack-based boilerplate), I chose what I believe best serves the project's goals. However, I'm fully prepared to adapt these choices if JavaScript or Webpack is deemed more suitable.
 
-🏗 Architecture
-The application adopts a modular architecture with clear separation of concerns, drawing inspiration from Screaming Architecture and Hexagonal Architecture to ensure scalability, maintainability, and alignment with business intent.
-Layers
+## Key Features
+- **Product List Page (PLP)**: Displays API-fetched products in a responsive grid (up to 4 items per row), with real-time filtering by brand and model.
+- **Product Details Page (PDP)**: Features a two-column layout with a product image on the left and details/actions on the right, including a link to return to the PLP.
+- **Header**: Includes a clickable title/icon linking to the PLP, breadcrumbs for navigation, and a persistent cart item count.
+- **Search Bar**: Filters products in real time based on user input, matching brand and model.
+- **Product Actions**: Offers selectors for storage and color (default-selected if only one option) and a button to add items to the cart via API.
+- **Caching**: Implements a 1-hour cache for API responses using `@tanstack/react-query`, minimizing redundant requests.
+- **CI/CD Pipeline**: Automates linting, testing, building, and deployment to Vercel via GitHub Actions.
+- **Testing**: Includes unit, integration, and E2E tests with Jest and React Testing Library.
+- **Code Quality**: Enforces strict standards with ESLint (Airbnb config) and Prettier.
 
-UI Layer: Renders views using components and pages.
-Logic Layer: Manages business logic and state through hooks and Context API.
-Data Layer: Handles API interactions and caching via services and TanStack Query.
+## Tech Stack
+- **Frontend**: React 18, **TypeScript**, **Vite**
+- **State Management**: Context API (for cart state)
+- **Data Fetching & Caching**: `@tanstack/react-query`
+- **Styling**: Tailwind CSS (via `App.css`) for responsive design
+- **Testing**: Jest, React Testing Library
+- **API Services**: Custom services for the provided API
+- **Routing**: React Router for client-side navigation
 
-Patterns
-
-Observer: Context API for reactive cart state management.
-Repository: API services as a data access layer.
-Component Composition: Reusable, single-responsibility components.
-Custom Hooks: Encapsulated logic for reusability and testability.
-Ports and Adapters: Services act as adapters to isolate business logic from external APIs.
-
-Architectural Decision
-The modular architecture organizes code by business domains (products, cart, notifications), balancing the project's moderate size with the need for scalability:
-
-Screaming Architecture: Inspired by my familiarity with this pattern, the structure reflects the application's core domains (e.g., products for product listing and details), making the codebase intuitive and aligned with business goals.
-Hexagonal Architecture Influence: Services (productServices, cartServices) act as ports, decoupling business logic from external APIs. This facilitates testing and potential integrations with different backends.
-Why Modular?: For a project of this scope, a fully hexagonal or Domain-Driven Design approach would be excessive, while a flat structure would hinder maintainability. The modular design strikes a balance, leveraging my expertise in Screaming Architecture while incorporating hexagonal principles for scalability. It supports future features (e.g., user authentication, order history) without requiring significant refactoring.
-
-📂 Project Structure
-The project is organized by business domains under domains/, with shared utilities in shared/ to enhance clarity and scalability:
+## Directory Structure
+The project is structured for modularity and scalability:
+```
 src/
-├── __tests__/                     # Unit and integration tests
-│   ├── products/
+├── tests/                      # Unit and integration tests
+│   ├── products/                   # Product-related tests
 │   │   ├── ProductItem.test.tsx
 │   │   └── useFilteredProducts.test.tsx
-│   └── ui/
+│   └── ui/                         # UI component tests
 │       └── SearchBar.test.tsx
-├── domains/                      # Business domains
-│   ├── products/                 # Product management
-│   │   ├── components/           # Domain-specific components
+├── domains/                        # Business logic domains
+│   ├── products/                   # Product management
+│   │   ├── components/             # Product-specific components
 │   │   │   ├── ProductActions.tsx
 │   │   │   ├── ProductDescription.tsx
 │   │   │   ├── ProductImage.tsx
 │   │   │   └── ProductItem.tsx
-│   │   ├── hooks/                # Domain-specific hooks
+│   │   ├── hooks/                  # Product-specific hooks
 │   │   │   ├── useFilteredProducts.ts
 │   │   │   ├── useProductDetails.ts
 │   │   │   └── useProducts.ts
-│   │   ├── pages/                # Domain-specific pages
+│   │   ├── pages/                  # Product-specific pages
 │   │   │   ├── ProductDetailPage.tsx
 │   │   │   └── ProductListPage.tsx
-│   │   ├── services/             # API services
+│   │   ├── services/               # Product API services
 │   │   │   └── productServices.ts
-│   │   └── types/                # Domain-specific types
-│   │       ├── Product.ts
-│   │       └── ProductDetail.ts
-│   ├── cart/                     # Cart management
-│   │   ├── context/              # Cart state
+│   │   └── types/                  # Product types
+│   │       ├── Product.d.ts
+│   │       └── ProductDetail.d.ts
+│   ├── cart/                       # Cart management
+│   │   ├── context/                # Cart state management
 │   │   │   └── CartContext.tsx
-│   │   ├── hooks/                # Cart hooks
+│   │   ├── hooks/                  # Cart hooks
 │   │   │   └── useAddToCart.ts
-│   │   ├── services/             # Cart API services
+│   │   ├── services/               # Cart API services
 │   │   │   └── cartServices.ts
-│   │   └── types/                # Cart types
-│   │       └── Cart.ts
-│   └── notifications/            # Notification system
-│       ├── hooks/                # Notification hooks
+│   │   └── types/                  # Cart types
+│   │       └── Cart.d.ts
+│   └── notifications/              # Notification system
+│       ├── hooks/                  # Notification hooks
 │       │   └── useToast.ts
-│       └── types/                # Notification types
-│           └── Toast.ts
-├── shared/                       # Shared utilities
-│   ├── components/               # Generic components
+│       └── types/                  # Notification types
+│           └── Toast.d.ts
+├── shared/                         # Shared utilities and components
+│   ├── components/                 # Reusable components
 │   │   ├── ErrorBoundary.tsx
 │   │   ├── Header.tsx
 │   │   ├── LoadingSpinner.tsx
 │   │   └── SearchBar.tsx
-│   ├── types/                    # Shared types
-│   │   └── ErrorBoundary.ts
-│   └── styles/                   # Global styles
+│   ├── types/                      # Shared types
+│   │   └── ErrorBoundary.d.ts
+│   │   └── searchBar.d.ts
+│   └── styles/                     # Global styles
 │       └── App.css
-├── App.tsx                       # Root component
-└── main.tsx                      # Entry point
+├── App.tsx                         # Root component
+└── main.tsx                        # Application entry point
+```
 
-This structure promotes modularity, separating domain-specific logic from shared utilities, and aligns with enterprise-grade practices.
-🧩 Components
-UI Components
+## Installation
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/your-username/inditex-test.git
+   cd inditex-test
+   ```
 
-Header: Displays the app title, breadcrumbs, and cart count with FontAwesome icons.
-SearchBar: Enables real-time filtering by brand or model with accessible input.
-ProductItem: Renders product cards with image, brand, model, and price.
-ProductImage: Displays product visuals with lazy loading for performance.
-ProductDescription: Presents detailed product specifications in a structured format.
-ProductActions: Manages storage/color selection and add-to-cart functionality.
-LoadingSpinner: Visual indicator for loading states with ARIA accessibility.
-ErrorBoundary: Catches runtime errors and renders a fallback UI.
+2. **Install Dependencies**: Using npm:
+   ```bash
+   npm install
+   ```
+   Or using Yarn:
+   ```bash
+   yarn install
+   ```
 
-Pages
+3. **Set Up Environment Variables**: Create a .env file in the project root:
+   ```env
+   VITE_API_BASE_URL=https://itx-frontend-test.onrender.com
+   ```
 
-ProductListPage (PLP): Lists products with search and filtering capabilities.
-ProductDetailPage (PDP): Displays product details with image and action columns.
+4. **Run the App Locally**:
+   ```bash
+   npm run start
+   ```
+   This starts the development server automatically.
 
-🪝 Custom Hooks
-Custom hooks encapsulate logic for reusability and maintainability:
-// Example usage
-const { data: products, isLoading, error } = useProducts();
-const filteredProducts = useFilteredProducts(products, searchTerm);
+## Scripts
+The project includes all required scripts, plus extras for convenience:
 
+- `npm run start`: Starts the development server with Vite.
+- `npm run build`: Builds the project for production using TypeScript and Vite.
+- `npm run test`: Runs the test suite with Jest.
+- `npm run lint`: Runs ESLint to check code quality.
 
-useProducts: Fetches the product list using TanStack Query with caching.
-useFilteredProducts: Filters products in real-time based on search input.
-useProductDetails: Retrieves detailed product data by ID.
-useAddToCart: Handles cart mutations and updates with optimistic updates.
-useToast: Integrates react-toastify for user notifications (e.g., success/error messages).
+Additional scripts:
+- `npm run lint:fix`: Automatically fixes linting issues.
+- `npm run format`: Formats code with Prettier.
+- `npm run format:check`: Checks code formatting.
+- `npm run preview`: Previews the production build locally.
+- `npm run test:watch`: Runs tests in watch mode.
 
-💾 Caching System
-Implementation
+## Testing
+The testing strategy ensures reliability:
 
-TanStack Query: Manages in-memory caching with a 1-hour stale time for products and details.
-LocalStorage: Persists cart count and cached API responses with a 1-hour expiration.
-Background Revalidation: Automatically refetches stale data to keep the UI up-to-date.
+- **Unit Tests**: Cover individual components (e.g., ProductItem.test.tsx) and hooks (e.g., useFilteredProducts.test.tsx).
+- **Integration Tests**: Verify component interactions, such as search filtering and cart updates.
+- **End-to-End (E2E) Tests**: Simulate user flows (e.g., navigating from PLP to PDP, adding to cart).
 
-Flow
-Request → Check Cache (TanStack Query/LocalStorage) → Valid? → Return Cached
-        → Else → Fetch API → Update Cache → Return
+Run tests:
+```bash
+npm run test
+```
 
-Benefits
+Run tests in watch mode:
+```bash
+npm run test:watch
+```
 
-Minimizes API requests for better performance.
-Enhances user experience with instant data rendering.
-Supports partial offline functionality.
-Reduces server load.
+## ESLint & Prettier
+Code quality is maintained with:
 
-✅ Testing
-Test Suite
+- **ESLint**: Configured with Airbnb's style guide for industry-standard linting.
+- **Prettier**: Ensures consistent formatting.
 
-Unit Tests: Validate individual components and hooks.
-Integration Tests: Simulate user flows (e.g., searching, adding to cart).
-Mock API: Use mocked responses for consistent and deterministic tests.
+Run linting:
+```bash
+npm run lint
+```
 
-Example Test
-test('renders ProductItem with correct data', () => {
-  render(<ProductItem product={mockProduct} />);
-  expect(screen.getByText('Apple')).toBeInTheDocument();
-  expect(screen.getByText('iPhone 13')).toBeInTheDocument();
-});
+Fix linting issues:
+```bash
+npm run lint:fix
+```
 
-Coverage Areas
+Check formatting:
+```bash
+npm run format:check
+```
 
-Component rendering and prop validation.
-User interactions (clicks, form inputs, navigation).
-API response handling (success, error, loading).
-Error boundary behavior under failure conditions.
-Responsive layout across multiple breakpoints.
+Format code:
+```bash
+npm run format
+```
 
-Run Tests
-npm run test          # Run all tests
-npm run test:watch    # Watch mode for development
-npm run test:coverage # Generate coverage report
+## CI/CD Configuration
+The project uses GitHub Actions for Continuous Integration and Deployment, automating linting, testing, building, and deployment to Vercel on pushes or pull requests to the main branch:
 
-🚀 Setup & Installation
-Requirements
+```yaml
+name: CI + CD
 
-Node.js ≥ 18
-npm or yarn
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-Steps
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-Clone the repository:git clone https://github.com/your-username/mobile-shop.git
+    steps:
+      - uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-Install dependencies:cd mobile-shop && npm install
+      - name: Install Dependencies
+        run: npm install
 
+      - name: Check Prettier Formatting
+        run: npm run format:check
 
-Start the development server:npm run dev
+      - name: Run Linter
+        run: npm run lint
 
+      - name: Run Tests
+        run: npm run test
 
-Open http://localhost:5173 in your browser.
+      - name: Build
+        run: npm run build
 
-Scripts
+      - name: Deploy to Vercel
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: npx vercel --prod --token=${{ secrets.VERCEL }}
+```
 
-npm run dev: Launches the Vite development server with hot module replacement.
-npm run build: Generates an optimized production build with Rollup.
-npm run lint: Checks code quality with ESLint.
-npm run lint:fix: Automatically fixes linting issues.
-npm run format: Formats code with Prettier.
-npm run format:check: Verifies formatting compliance.
-npm run test: Runs the test suite with Jest.
-npm run preview: Previews the production build locally.
+## Technical Decisions
+To demonstrate my technical judgment, I made choices I believe optimize the project's quality, performance, and maintainability. Below, I explain deviations from the test's suggestions (TypeScript and Vite) and emphasize my flexibility to adapt if JavaScript or Webpack is preferred.
 
-📱 Responsive Design
-The application is built with a mobile-first approach to ensure a seamless experience across devices:
+### Why TypeScript?
+The test recommended JavaScript with ES6 and advised against TypeScript. I chose TypeScript because I believe it significantly enhances the project:
 
-Breakpoints: 480px, 768px, 992px, 1200px.
-Product Grid: Adapts from 1 to 4 columns based on screen width.
-Layouts: Leverages Flexbox and CSS Grid for flexible, responsive designs.
-CSS Variables: Ensures consistent theming and simplifies style maintenance.
-Accessibility: Includes ARIA attributes and keyboard
+- **Type Safety**: TypeScript catches errors during development, especially critical for API integrations where response shapes (e.g., product or cart data) can be unpredictable. Defining types like Product and ProductDetail ensures robust data handling.
+- **Maintainability**: Explicit types make the codebase easier to understand and refactor, supporting long-term scalability.
+- **Developer Productivity**: Features like autocompletion and type hints streamline development and reduce errors.
+- **Industry Alignment**: TypeScript is a standard in modern React projects, making the codebase more professional and future-proof.
+- **Flexibility**: While I believe TypeScript adds substantial value, I'm fully prepared to convert the project to JavaScript if it's deemed optimal. The codebase uses minimal TypeScript-specific features, so transitioning would be straightforward (e.g., removing type annotations). This choice reflects my judgment for quality, but I'm open to aligning with project preferences.
 
+### Why Vite Instead of Webpack?
+The test allowed a boilerplate template, often implying a Webpack-based setup like Create React App. I opted for Vite because I believe it better serves the project:
+
+- **Blazing Fast Development**: Vite's ES Module-based system offers near-instant hot module replacement (HMR) and faster cold starts than Webpack, boosting developer productivity.
+- **Simpler Configuration**: Vite requires minimal setup, reducing complexity while supporting all required features (e.g., env variables, production builds).
+- **Optimized Performance**: Vite's Rollup-based production builds create smaller, faster bundles, aligning with the SPA's performance needs.
+- **Modern Tooling**: Vite is designed for modern browsers, making it a forward-looking choice for this project.
+- **Flexibility**: I chose Vite to showcase a modern, efficient tool, but I'm ready to switch to Webpack if it's preferred. Vite's configuration is lightweight, and migrating to Webpack (e.g., via Create React App or a custom setup) would be manageable. This decision reflects my aim to prioritize performance and simplicity, but I'm adaptable to meet specific requirements.
+
+### Other Enhancements
+- **Custom CSS**: Chosen for its flexibility and full control over responsive design (e.g., 4-item grid on the PLP, two-column layout on the PDP), adapting seamlessly to different screen sizes.
+- **@tanstack/react-query**: Simplifies API fetching and caching, implementing the required 1-hour cache expiration while adding features like loading states and retries for better UX.
+- **Context API**: Used for cart state management to persist the cart item count across views, keeping the solution lightweight.
+- **Error Boundary**: Added to handle unexpected errors gracefully, enhancing reliability.
+- **Evolutionary Commits**: The repository includes granular commits (e.g., initial setup, PLP implementation, testing) to show iterative progress.
