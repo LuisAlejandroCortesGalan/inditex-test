@@ -43,12 +43,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [cartItems]);
 
   const addToCart = (item: CartAddRequest) => {
-    console.log("Adding to cart:", item);
     setCartItems((prevItems) => [...prevItems, item].slice(0, 50));
   };
 
   const removeFromCart = (index: number) => {
-    console.log("Removing item at index:", index);
     setCartItems((prevItems) => {
       const updatedItems = [...prevItems];
       updatedItems.splice(index, 1);
@@ -57,7 +55,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const clearCart = () => {
-    console.log("Clearing cart");
     setCartItems([]);
     localStorage.removeItem("cart_items");
   };

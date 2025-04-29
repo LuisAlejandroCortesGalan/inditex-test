@@ -33,7 +33,6 @@ export const fetchProductDetails = async (
 export const addToCart = async (
   cartRequest: CartAddRequest,
 ): Promise<CartResponse> => {
-  console.log("Sending to cart API:", cartRequest);
   try {
     const response = await fetch(`${API_BASE_URL}/api/cart`, {
       method: "POST",
@@ -43,7 +42,6 @@ export const addToCart = async (
       body: JSON.stringify(cartRequest),
     });
     const responseText = await response.text();
-    console.log("Cart API response:", response.status, responseText);
     if (!response.ok) {
       throw new Error(
         `HTTP error! status: ${response.status} - ${responseText}`,

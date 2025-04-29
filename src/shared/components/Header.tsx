@@ -3,10 +3,13 @@ import { Link, useLocation } from "react-router-dom";
 
 import { useCart } from "../../domains/cart/context/CartContext";
 import { useCartLogic } from "../../domains/cart/hooks/useCartLogic";
+import { useToast } from "../../domains/notifications/hooks/useToast";
 import { getBreadcrumbs } from "../utils/breadcrumbs";
 
+import LoadingSpinner from "./LoadindSpinner";
+
 const Header: React.FC = () => {
-  const { cartCount } = useCart();
+  const { cartCount, clearCart } = useCart();
   const {
     groupedItemsArray,
     products,
@@ -15,11 +18,20 @@ const Header: React.FC = () => {
     error,
     removeCartItem,
   } = useCartLogic();
+  const { showSuccess } = useToast();
   const location = useLocation();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
+  };
+
+  const handleCheckout = () => {
+    clearCart();
+    setIsCartOpen(false);
+    setIsCheckoutModalOpen(false);
+    showSuccess("Thank you for your purchase!");
   };
 
   return (
@@ -45,7 +57,12 @@ const Header: React.FC = () => {
           </button>
         </div>
 
-        <div className={`cart-modal ${isCartOpen ? "active" : ""}`}>
+        {/* Cart Modal */}
+        <div
+          className={`cart-modal ${isCartOpen ? "active" : ""}`}
+          role="dialog"
+          aria-modal="true"
+        >
           <div className="cart-modal-content">
             <div className="cart-modal-header">
               <h2 className="cart-modal-title">Your Cart</h2>
@@ -61,7 +78,7 @@ const Header: React.FC = () => {
             {error ? (
               <p className="cart-error">Error: {error}</p>
             ) : isLoading ? (
-              <p className="cart-loading">Loading products...</p>
+              <LoadingSpinner />
             ) : groupedItemsArray.length === 0 ? (
               <p className="cart-empty">Your cart is empty.</p>
             ) : (
@@ -93,13 +110,7 @@ const Header: React.FC = () => {
                         </p>
                       </div>
                       <button
-                        onClick={() => {
-                          console.log(
-                            "Delete button clicked for indices:",
-                            item.indices,
-                          );
-                          removeCartItem(item.indices);
-                        }}
+                        onClick={() => removeCartItem(item.indices)}
                         className="cart-item-remove"
                         aria-label={`Remove one ${product.brand} ${product.model} from cart`}
                       >
@@ -114,15 +125,56 @@ const Header: React.FC = () => {
                     <strong>Total:</strong> ${totalPrice.toFixed(2)}
                   </p>
                 </div>
-                <Link
-                  to="/checkout"
-                  onClick={toggleCart}
+                <button
+                  onClick={() => setIsCheckoutModalOpen(true)}
                   className="cart-checkout-button"
+                  disabled={groupedItemsArray.length === 0}
                 >
                   Go to Checkout
-                </Link>
+                </button>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Checkout Confirmation Modal */}
+        <div
+          className={`checkout-modal ${isCheckoutModalOpen ? "active" : ""}`}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="checkout-modal-content">
+            <div className="checkout-modal-header">
+              <h2 className="checkout-modal-title">Confirm Purchase</h2>
+              <button
+                onClick={() => setIsCheckoutModalOpen(false)}
+                className="checkout-modal-close"
+                aria-label="Close checkout confirmation"
+              >
+                <i className="fa fa-times" aria-hidden="true"></i>
+                <span className="sr-only">Close</span>
+              </button>
+            </div>
+            <div className="checkout-modal-body">
+              <p>Are you sure you want to complete your purchase?</p>
+              <p>
+                <strong>Total:</strong> ${totalPrice.toFixed(2)}
+              </p>
+            </div>
+            <div className="checkout-modal-footer">
+              <button
+                onClick={() => setIsCheckoutModalOpen(false)}
+                className="checkout-modal-cancel"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCheckout}
+                className="checkout-modal-confirm"
+              >
+                Confirm Purchase
+              </button>
+            </div>
           </div>
         </div>
       </div>
