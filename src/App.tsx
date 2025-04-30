@@ -1,5 +1,10 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import {
+  PersistQueryClientProvider,
+  PersistedClient,
+  Persister,
+} from "@tanstack/react-query-persist-client";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -16,11 +21,31 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
+      staleTime: 1000 * 60 * 60,
+      gcTime: 1000 * 60 * 60,
       retry: 1,
     },
   },
 });
+
+const localStoragePersister: Persister = {
+  persistClient: async (client: PersistedClient) => {
+    const serializedClient = JSON.stringify(client);
+    localStorage.setItem("tanstack-query-cache", serializedClient);
+    return Promise.resolve();
+  },
+  restoreClient: async () => {
+    const serializedClient = localStorage.getItem("tanstack-query-cache");
+    if (serializedClient) {
+      return Promise.resolve(JSON.parse(serializedClient));
+    }
+    return Promise.resolve(null);
+  },
+  removeClient: async () => {
+    localStorage.removeItem("tanstack-query-cache");
+    return Promise.resolve();
+  },
+};
 
 const routerOptions = {
   future: {
@@ -39,7 +64,22 @@ const HeaderWithProviders: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        persister: localStoragePersister,
+        maxAge: 1000 * 60 * 60,
+        buster: "v1",
+        dehydrateOptions: {
+          shouldDehydrateQuery: (query) => {
+            return (
+              query.queryKey[0] === "products" ||
+              query.queryKey[0] === "product"
+            );
+          },
+        },
+      }}
+    >
       <CartProvider>
         <Router future={routerOptions.future}>
           <ErrorBoundary>
@@ -55,10 +95,8 @@ const App: React.FC = () => {
           </ErrorBoundary>
         </Router>
       </CartProvider>
-      {process.env.NODE_ENV === "development" && (
-        <ReactQueryDevtools initialIsOpen={false} />
-      )}
-    </QueryClientProvider>
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+    </PersistQueryClientProvider>
   );
 };
 
