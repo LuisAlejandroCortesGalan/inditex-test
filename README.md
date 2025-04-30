@@ -2,6 +2,8 @@
 
 Welcome to the **Inditex Test App**, a sleek Single Page Application (SPA) crafted for the Inditex Front-End Test. This React-based project delivers a seamless mobile device shopping experience with a Product List Page (PLP), Product Details Page (PDP), real-time search, API-driven cart functionality, and robust caching. Below, I'll guide you through the project, explain how it meets the test requirements, and share my reasoning behind key technical decisions—particularly my use of TypeScript and Vite—while highlighting my readiness to adapt if needed.
 
+Note: Some mobile products from the API do not have pricing information available.
+
 **Live Demo**: [Inditex Test App](https://inditex-test-eta.vercel.app/)
 
 ## Table of Contents
