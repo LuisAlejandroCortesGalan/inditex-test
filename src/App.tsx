@@ -3,7 +3,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { CartProvider } from "./domains/cart/context/CartContext";
+import { CartProvider, useCart } from "./domains/cart/context/CartContext";
+import { useCartLogic } from "./domains/cart/hooks/useCartLogic";
+import { useCheckout } from "./domains/cart/hooks/useCheckout";
 import ProductDetailPage from "./domains/products/pages/ProductDetailPage";
 import ProductListPage from "./domains/products/pages/ProductListPage";
 import ErrorBoundary from "./shared/components/ErrorBoundary";
@@ -14,7 +16,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5,
+      staleTime: 1000 * 60 * 5, // 5 minutes
       retry: 1,
     },
   },
@@ -27,6 +29,14 @@ const routerOptions = {
   },
 };
 
+const HeaderWithProviders: React.FC = () => {
+  const cartState = useCart();
+  const cartLogic = useCartLogic();
+  const { handleCheckout } = useCheckout();
+
+  return <Header {...cartState} {...cartLogic} {...{ handleCheckout }} />;
+};
+
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -34,7 +44,7 @@ const App: React.FC = () => {
         <Router future={routerOptions.future}>
           <ErrorBoundary>
             <div className="app">
-              <Header />
+              <HeaderWithProviders />
               <main className="main-content">
                 <Routes>
                   <Route path="/" element={<ProductListPage />} />
