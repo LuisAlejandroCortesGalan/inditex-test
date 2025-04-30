@@ -81,14 +81,18 @@ src/
 │   │       ├── Product.d.ts
 │   │       └── ProductDetail.d.ts
 │   ├── cart/                       # Cart management
+│   │   ├── components/             # Cart-specific components (new)
+│   │   │   ├── CartModal.tsx       # New component for cart modal
+│   │   │   └── CheckoutModal.tsx   # New component for checkout modal
 │   │   ├── context/                # Cart state management
 │   │   │   └── CartContext.tsx
 │   │   ├── hooks/                  # Cart hooks
-│   │   │   └── useAddToCart.ts
+│   │   │   ├── useAddToCart.ts
+│   │   │   └── useCheckout.ts      # New hook for checkout logic
 │   │   ├── services/               # Cart API services
 │   │   │   └── cartServices.ts
 │   │   └── types/                  # Cart types
-│   │       └── Cart.d.ts
+│   │       └── Cart.d.ts           # Updated with new interfaces
 │   └── notifications/              # Notification system
 │       ├── hooks/                  # Notification hooks
 │       │   └── useToast.ts
@@ -97,17 +101,16 @@ src/
 ├── shared/                         # Shared utilities and components
 │   ├── components/                 # Reusable components
 │   │   ├── ErrorBoundary.tsx
-│   │   ├── Header.tsx
+│   │   ├── Header.tsx              # Refactored to use new components
 │   │   ├── LoadingSpinner.tsx
 │   │   └── SearchBar.tsx
 │   ├── types/                      # Shared types
-│   │   └── ErrorBoundary.d.ts
+│   │   ├── ErrorBoundary.d.ts
 │   │   └── searchBar.d.ts
 │   └── styles/                     # Global styles
 │       └── App.css
-├── App.tsx                         # Root component
+├── App.tsx                         # Root component (updated for dependency injection)
 └── main.tsx                        # Application entry point
-```
 
 ## Installation
 1. **Clone the Repository**:
