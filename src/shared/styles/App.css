@@ -660,7 +660,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1100; 
+  z-index: 1100;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition-speed) ease-in-out;
@@ -758,6 +758,5 @@ body {
 }
 
 .checkout-modal-confirm:hover {
-  background: darken(var(--primary-color), 10%);
   transform: var(--hover-transform);
 }
