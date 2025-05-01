@@ -77,4 +77,48 @@ describe("useFilteredProducts", () => {
     );
     expect(result.current).toBeUndefined();
   });
+
+  // Add tests for the new filtering options
+  it("filters by minimum price", () => {
+    const { result } = renderHook(() =>
+      useFilteredProducts(mockProducts, { minPrice: 900 }),
+    );
+    expect(result.current).toHaveLength(1);
+    expect(result.current?.[0].id).toBe("1");
+  });
+
+  it("filters by maximum price", () => {
+    const { result } = renderHook(() =>
+      useFilteredProducts(mockProducts, { maxPrice: 800 }),
+    );
+    expect(result.current).toHaveLength(2);
+    expect(result.current?.map((p) => p.id)).toEqual(["3", "4"]);
+  });
+
+  it("sorts by price ascending", () => {
+    const { result } = renderHook(() =>
+      useFilteredProducts(mockProducts, { sortBy: "price-asc" }),
+    );
+    expect(result.current).toHaveLength(4);
+    expect(result.current?.map((p) => p.id)).toEqual(["3", "4", "2", "1"]);
+  });
+
+  it("sorts by price descending", () => {
+    const { result } = renderHook(() =>
+      useFilteredProducts(mockProducts, { sortBy: "price-desc" }),
+    );
+    expect(result.current).toHaveLength(4);
+    expect(result.current?.map((p) => p.id)).toEqual(["1", "2", "3", "4"]);
+  });
+
+  it("combines multiple filter options", () => {
+    const { result } = renderHook(() =>
+      useFilteredProducts(mockProducts, {
+        searchTerm: "Apple",
+        maxPrice: 800,
+      }),
+    );
+    expect(result.current).toHaveLength(1);
+    expect(result.current?.[0].id).toBe("4");
+  });
 });

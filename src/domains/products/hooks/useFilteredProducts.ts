@@ -11,12 +11,17 @@ interface FilterOptions {
 
 export const useFilteredProducts = (
   products: Product[] | undefined,
-  options: FilterOptions,
+  optionsOrSearchTerm: FilterOptions | string,
 ) => {
   return useMemo(() => {
     if (!products) {
       return products;
     }
+
+    const options: FilterOptions =
+      typeof optionsOrSearchTerm === "string"
+        ? { searchTerm: optionsOrSearchTerm }
+        : optionsOrSearchTerm;
 
     let filteredProducts = [...products];
 
@@ -53,5 +58,5 @@ export const useFilteredProducts = (
     }
 
     return filteredProducts;
-  }, [products, options]);
+  }, [products, optionsOrSearchTerm]);
 };
